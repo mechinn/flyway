@@ -33,6 +33,7 @@ import org.flywaydb.core.internal.dbsupport.solid.SolidDbSupport;
 import org.flywaydb.core.internal.dbsupport.sqlite.SQLiteDbSupport;
 import org.flywaydb.core.internal.dbsupport.sqlserver.SQLServerDbSupport;
 import org.flywaydb.core.internal.dbsupport.sybase.ase.SybaseASEDbSupport;
+import org.flywaydb.core.internal.dbsupport.teradata.TeradataDbSupport;
 import org.flywaydb.core.internal.dbsupport.vertica.VerticaDbSupport;
 import org.flywaydb.core.internal.util.logging.Log;
 import org.flywaydb.core.internal.util.logging.LogFactory;
@@ -136,6 +137,9 @@ public class DbSupportFactory {
         }
         if (databaseProductName.startsWith("HDB")) {
         	return new SapHanaDbSupport(connection);
+        }
+        if (databaseProductName.startsWith("Teradata")) {
+            return new TeradataDbSupport(connection);
         }
 
         throw new FlywayException("Unsupported Database: " + databaseProductName);

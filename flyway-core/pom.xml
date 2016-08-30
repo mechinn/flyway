@@ -16,6 +16,7 @@
     If you wish to run to Vertica, RedShift oder DB2 zOS tests, you can run the build with on of the following:
     mvn -PVerticaRedshiftDBTest
     mvn -PDB2zOSDBTest
+    mvn -PTeradataTest
     -->
     <modelVersion>4.0.0</modelVersion>
     <parent>
@@ -336,6 +337,16 @@
                     <artifactId>ngdbc</artifactId>
                     <scope>test</scope>
                 </dependency>
+                <dependency>
+                    <groupId>com.teradata</groupId>
+                    <artifactId>tdgssconfig</artifactId>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>com.teradata</groupId>
+                    <artifactId>terajdbc4</artifactId>
+                    <scope>test</scope>
+                </dependency>
             </dependencies>
             <build>
                 <plugins>
@@ -458,6 +469,37 @@
                         <!-- Force per-class parallelization -->
                         <configuration>
                             <parallel>classes</parallel>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>TeradataTest</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>com.teradata</groupId>
+                    <artifactId>tdgssconfig</artifactId>
+                    <version>15.10</version>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>com.teradata</groupId>
+                    <artifactId>terajdbc4</artifactId>
+                    <version>15.10</version>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <configuration>
+                            <!-- Exclude everything but Teradata -->
+                            <excludedGroups>org.flywaydb.core.DbCategory$EmbeddedDB,org.flywaydb.core.DbCategory$ContributorSupportedDB,org.flywaydb.core.DbCategory$OpenSourceDB,org.flywaydb.core.DbCategory$DB2,org.flywaydb.core.DbCategory$Oracle,org.flywaydb.core.DbCategory$SQLServer</excludedGroups>
                         </configuration>
                     </plugin>
                 </plugins>
